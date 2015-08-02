@@ -125,3 +125,11 @@ def foldRightUsingLeft[A, B](l: List[A], z: B)(f: (A, B) => B): B =
   foldLeft(l, z)((b, a) => f(a, b))
 
 assert(foldRightUsingLeft(List(1, 2, 3), 0)(_ + _) == 6)
+
+
+// ex 14
+def append[A](l: List[A], a: A): List[A] =
+  foldRight(l, List(a))(Cons(_, _))
+
+assert(append(Nil, 1) == List(1))
+assert(append(List(1, 2, 3), 1) == List(1, 2, 3, 1))
