@@ -131,5 +131,15 @@ assert(foldRightUsingLeft(List(1, 2, 3), 0)(_ + _) == 6)
 def append[A](l: List[A], a: A): List[A] =
   foldRight(l, List(a))(Cons(_, _))
 
+def appendAll[A](a: List[A], b: List[A]): List[A] =
+  foldRight(a, b)(Cons(_, _))
+
 assert(append(Nil, 1) == List(1))
 assert(append(List(1, 2, 3), 1) == List(1, 2, 3, 1))
+
+
+// ex 15
+def flatten[A](as: List[List[A]]): List[A] =
+  foldRight(as, Nil: List[A])(appendAll)
+
+assert(flatten(List(List(1), List(2), List(3))) == List(1, 2, 3))
