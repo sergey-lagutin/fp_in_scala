@@ -105,3 +105,23 @@ def lengthLeft[A](l: List[A]): Int = foldLeft(l, 0)((b, _) => b + 1)
 
 assert(lengthLeft(Nil) == 0)
 assert(lengthLeft(List(1, 2, 3)) == 3)
+
+
+// ex 12
+def reverse[A](l: List[A]): List[A] =
+  foldLeft(l, Nil: List[A])((b, a) => Cons(a, b))
+
+assert(reverse(Nil) == Nil)
+assert(reverse(List(1, 2, 3)) == List(3, 2, 1))
+
+
+// ex 13
+def foldLeftUsingRight[A, B](l: List[A], z: B)(f: (B, A) => B): B =
+  foldRight(l, z)((a, b) => f(b, a))
+
+assert(foldLeftUsingRight(List(1, 2, 3), 0)(_ + _) == 6)
+
+def foldRightUsingLeft[A, B](l: List[A], z: B)(f: (A, B) => B): B =
+  foldLeft(l, z)((b, a) => f(a, b))
+
+assert(foldRightUsingLeft(List(1, 2, 3), 0)(_ + _) == 6)
