@@ -143,3 +143,76 @@ def flatten[A](as: List[List[A]]): List[A] =
   foldRight(as, Nil: List[A])(appendAll)
 
 assert(flatten(List(List(1), List(2), List(3))) == List(1, 2, 3))
+
+
+// ex 16
+def addOne(l: List[Int]): List[Int] = l match {
+  case Nil => Nil
+  case Cons(h, t) => Cons(h + 1, addOne(t))
+}
+
+assert(addOne(Nil) == Nil)
+assert(addOne(List(1, 2, 3)) == List(2, 3, 4))
+
+
+// ex 17
+def toString(l: List[Double]): List[String] = l match {
+  case Nil => Nil
+  case Cons(h, t) => Cons(h.toString, toString(t))
+}
+
+assert(toString(Nil) == Nil)
+assert(toString(List(1.0, 2.0, 3.0)) == List("1.0", "2.0", "3.0"))
+
+
+// ex 18
+def map[A, B](l: List[A])(f: A => B): List[B] = l match {
+  case Nil => Nil
+  case Cons(h, t) => Cons(f(h), map(t)(f))
+}
+
+assert(map(List(1, 2, 3))(_ + 1) == List(2, 3, 4))
+assert(map(Nil: List[Int])(_ + 1) == Nil)
+
+
+// 19
+def filter[A](l: List[A])(f: A => Boolean): List[A] = l match {
+  case Nil => Nil
+  case Cons(h, t) =>
+    if (f(h)) Cons(h, filter(t)(f))
+    else filter(t)(f)
+}
+
+assert(filter(List(1, 2, 3, 4))(_ % 2 == 0) == List(2, 4))
+
+
+// ex 20
+def flatMap[A, B](l: List[A])(f: A => List[B]): List[B] =
+  flatten(map(l)(f))
+
+assert(flatMap(List(1, 2, 3))(x => List(x * 2)) == List(2, 4, 6))
+
+
+// ex 21
+def filterUsingFlatMap[A](l: List[A])(f: A => Boolean): List[A] =
+  flatMap(l)(a => if (f(a)) List(a) else Nil)
+
+assert(filterUsingFlatMap(List(1, 2, 3, 4))(_ % 2 == 0) == List(2, 4))
+
+
+// ex 22
+def addElements(a: List[Int], b: List[Int]): List[Int] = (a, b) match {
+  case (Nil, Nil) => Nil
+  case (Cons(x, xs), Cons(y, ys)) => Cons(x + y, addElements(xs, ys))
+}
+
+assert(addElements(List(1, 2, 3), List(4, 5, 6)) == List(5, 7, 9))
+
+
+// ex 23
+def combine[A, B, C](a: List[A], b: List[B])(f: (A, B) => C): List[C] = (a, b) match {
+  case (Nil, Nil) => Nil
+  case (Cons(x, xs), Cons(y, ys)) => Cons(f(x, y), combine(xs, ys)(f))
+}
+
+assert(combine(List(1, 2, 3), List(4, 5, 6))(_ + _) == List(5, 7, 9))
