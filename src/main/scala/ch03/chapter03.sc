@@ -1,6 +1,4 @@
-import ch03.List
-import ch03.Cons
-import ch03.Nil
+import ch03._
 
 import scala.annotation.tailrec
 
@@ -243,3 +241,75 @@ assert(hasSubsequence(List(1), Nil))
 assert(hasSubsequence(List(1, 2, 3, 4), List(1, 2)))
 assert(hasSubsequence(List(1, 2, 3, 4), List(4)))
 assert(!hasSubsequence(List(1, 2, 3, 4), List(1, 3)))
+
+
+// ex 25
+def size[A](tree: Tree[A]): Int = tree match {
+  case Leaf(_) => 1
+  case Branch(left, right) => 1 + size(left) + size(right)
+}
+
+assert(size(Leaf(1)) == 1)
+assert(size(Branch(Leaf(1), Branch(Leaf(2), Leaf(3)))) == 5)
+
+
+// ex 26
+def maximum(tree: Tree[Int]): Int = tree match {
+  case Leaf(value) => value
+  case Branch(left, right) => maximum(left).max(maximum(right))
+}
+
+assert(maximum(Leaf(1)) == 1)
+assert(maximum(Branch(Leaf(1), Branch(Leaf(2), Leaf(3)))) == 3)
+
+
+// ex 27
+def depth[A](tree: Tree[A]): Int = tree match {
+  case Leaf(_) => 1
+  case Branch(left, right) => depth(left).max(depth(right)) + 1
+}
+
+assert(depth(Leaf(1)) == 1)
+assert(depth(Branch(Leaf(1), Branch(Leaf(2), Leaf(3)))) == 3)
+
+
+// ex 28
+def map[A, B](tree: Tree[A])(f: A => B): Tree[B] = tree match {
+  case Leaf(value) => Leaf(f(value))
+  case Branch(left, right) => Branch(map(left)(f), map(right)(f))
+}
+
+assert(map(Leaf(1))(_ * 2) == Leaf(2))
+assert(map(Branch(Leaf(1), Branch(Leaf(2), Leaf(3))))(_ + 1) == Branch(Leaf(2), Branch(Leaf(3), Leaf(4))))
+
+
+// ex 29
+def fold[A, B](tree: Tree[A])(leaf: A => B)(branch: (B, B) => B): B = tree match {
+  case Leaf(value) => leaf(value)
+  case Branch(left, right) => branch(fold(left)(leaf)(branch), fold(right)(leaf)(branch))
+}
+
+def sizeFold[A](tree: Tree[A]): Int =
+  fold(tree)(_ => 1)(_ + _ + 1)
+
+assert(sizeFold(Leaf(1)) == 1)
+assert(sizeFold(Branch(Leaf(1), Branch(Leaf(2), Leaf(3)))) == 5)
+
+def maximumFold(tree: Tree[Int]): Int =
+  fold(tree)((x : Int) => x)(_ max _)
+
+assert(maximumFold(Leaf(1)) == 1)
+assert(maximumFold(Branch(Leaf(1), Branch(Leaf(2), Leaf(3)))) == 3)
+
+def depthFold[A](tree: Tree[A]): Int =
+  fold(tree)(_ => 1)(_ max _ + 1)
+
+assert(depthFold(Leaf(1)) == 1)
+assert(depthFold(Branch(Leaf(1), Branch(Leaf(2), Leaf(3)))) == 3)
+
+def mapFold[A, B](tree: Tree[A])(f: A => B): Tree[B] =
+  fold(tree)(leaf => Leaf(f(leaf)): Tree[B])((left, right) => Branch(left, right))
+
+assert(mapFold(Leaf(1))(_ * 2) == Leaf(2))
+assert(mapFold(Branch(Leaf(1), Branch(Leaf(2), Leaf(3))))(_ + 1) == Branch(Leaf(2), Branch(Leaf(3), Leaf(4))))
+
