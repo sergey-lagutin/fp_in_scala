@@ -216,3 +216,30 @@ def combine[A, B, C](a: List[A], b: List[B])(f: (A, B) => C): List[C] = (a, b) m
 }
 
 assert(combine(List(1, 2, 3), List(4, 5, 6))(_ + _) == List(5, 7, 9))
+
+
+// ex 24
+def hasSubsequence[A](l: List[A], sub: List[A]): Boolean = {
+  def isStartWith[A](a: List[A], b: List[A]): Boolean =
+    (a, b) match {
+      case (_, Nil) => true
+      case (Nil, _) => false
+      case (Cons(x, xs), Cons(y, ys)) =>
+        if (x == y) isStartWith(xs, ys)
+        else false
+    }
+
+  (l, sub) match {
+    case (_, Nil) => true
+    case (Nil, _) => false
+    case (Cons(x, xs), Cons(y, ys)) =>
+      if (x == y) isStartWith(xs, ys)
+      else hasSubsequence(xs, sub)
+  }
+}
+
+assert(!hasSubsequence(Nil, List(1)))
+assert(hasSubsequence(List(1), Nil))
+assert(hasSubsequence(List(1, 2, 3, 4), List(1, 2)))
+assert(hasSubsequence(List(1, 2, 3, 4), List(4)))
+assert(!hasSubsequence(List(1, 2, 3, 4), List(1, 3)))
