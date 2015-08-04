@@ -1,5 +1,11 @@
 package ch04
 
+object Option {
+  def apply[A](a: A): Option[A] =
+    if (a == null) None
+    else Some(a)
+}
+
 sealed trait Option[+A] {
   def map[B](f: A => B): Option[B] = this match {
     case Some(a) => Some(f(a))
