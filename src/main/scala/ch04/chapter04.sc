@@ -35,3 +35,17 @@ assert(sequence(List(Some(1), None)) == None)
 assert(sequence(List(Some(1), Some(2))) == Some(List(1, 2)))
 
 
+// ex 5
+def traverse_naive[A, B](a: List[A])(f: A => Option[B]): Option[List[B]] =
+  sequence(a.map(f))
+
+def traverse[A, B](a: List[A])(f: A => Option[B]): Option[List[B]] = {
+  a.foldLeft(Option(List[B]())) {
+    (list, x) => map2(list, f(x))(_ :+ _)
+  }
+}
+
+def sqrt(x: Int): Option[Int] = if ( x >= 0 ) Some(math.sqrt(x).toInt) else None
+
+assert(traverse(List(1, -1))(sqrt) == None)
+assert(traverse(List(1, 4))(sqrt) == Some(List(1, 2)))
