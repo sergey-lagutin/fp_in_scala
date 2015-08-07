@@ -45,7 +45,7 @@ def traverse[A, B](a: List[A])(f: A => Option[B]): Option[List[B]] = {
   }
 }
 
-def sqrt(x: Int): Option[Int] = if ( x >= 0 ) Some(math.sqrt(x).toInt) else None
+def sqrt(x: Int): Option[Int] = if (x >= 0) Some(math.sqrt(x).toInt) else None
 
 assert(traverse(List(1, -1))(sqrt) == None)
 assert(traverse(List(1, 4))(sqrt) == Some(List(1, 2)))
