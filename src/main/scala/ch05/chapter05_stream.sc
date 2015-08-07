@@ -25,3 +25,8 @@ assert(!Stream(1, -2, 3).forAll(_ > 0))
 // ex 5
 assert(Stream.empty[Int].takeWhile2(x => true).toList == Nil)
 assert(Stream(1, 2, -1, 1, 2).takeWhile2(_ > 0).toList == List(1, 2))
+
+
+// ex 6
+assert(Stream.empty.headOption == None)
+assert(Stream(1, 2, 3).headOption == Some(1))
