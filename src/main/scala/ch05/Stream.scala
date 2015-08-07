@@ -7,6 +7,20 @@ sealed trait Stream[+A] {
     case Cons(h, t) => h() :: t().toList
   }
 
+  def take(n: Int): Stream[A] = this match {
+    case Cons(h, t) if n > 0 => Cons(h, () => t().take(n - 1))
+    case _ => Stream.empty
+  }
+
+  def drop(n: Int): Stream[A] = this match {
+    case Cons(h, t) if n > 0 => t().drop(n - 1)
+    case _ => this
+  }
+
+  def takeWhile(p: A => Boolean): Stream[A] = this match {
+    case Cons(h, t) if p(h()) => Cons(h, () => t().takeWhile(p))
+    case _ => Stream.empty
+  }
 }
 
 case object Empty extends Stream[Nothing]
