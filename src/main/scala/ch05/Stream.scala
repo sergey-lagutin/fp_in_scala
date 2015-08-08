@@ -80,5 +80,10 @@ object Stream {
 
   def from(n: Int): Stream[Int] = Stream.cons(n, from(n + 1))
 
-  def fibs: Stream[Int] = ???
+  val fibs: Stream[Int] = {
+    def go(x0: Int, x1: Int): Stream[Int] =
+      cons(x0, go(x1, x0 + x1))
+
+    go(0, 1)
+  }
 }
