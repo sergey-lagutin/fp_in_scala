@@ -44,3 +44,16 @@ assert(Stream(1, 2, 3).append(Stream(4, 5, 6)).toList == List(1, 2, 3, 4, 5, 6))
 def list(n: Int): Stream[Int] = Stream((1 to n).toList: _*)
 assert(Stream.empty[Int].flatMap(list).toList == Nil)
 assert(Stream(1, 2, 3).flatMap(list).toList == List(1, 1, 2, 1, 2, 3))
+
+
+// ex 8
+assert(Stream.constant(5).take(2).toList == List(5, 5))
+
+
+// ex 9
+assert(Stream.from(2).take(5).toList == List(2, 3, 4, 5, 6))
+
+
+// ex 10
+assert(Stream.fibs.take(3).toList == List(0, 1, 1))
+assert(Stream.fibs.take(6).toList == List(0, 1, 1, 2, 3, 5))
