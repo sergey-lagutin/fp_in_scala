@@ -57,3 +57,12 @@ assert(Stream.from(2).take(5).toList == List(2, 3, 4, 5, 6))
 // ex 10
 assert(Stream.fibs.take(3).toList == List(0, 1, 1))
 assert(Stream.fibs.take(6).toList == List(0, 1, 1, 2, 3, 5))
+
+
+// ex 11
+val fibs2: Stream[Int] = Stream.unfold((0, 1)) {
+  case (x0, x1) => Some((x0, (x1, x0 + x1)))
+}
+
+assert(fibs2.take(3).toList == List(0, 1, 1))
+assert(fibs2.take(6).toList == List(0, 1, 1, 2, 3, 5))
