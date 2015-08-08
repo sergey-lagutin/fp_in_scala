@@ -30,3 +30,17 @@ assert(Stream(1, 2, -1, 1, 2).takeWhile2(_ > 0).toList == List(1, 2))
 // ex 6
 assert(Stream.empty.headOption == None)
 assert(Stream(1, 2, 3).headOption == Some(1))
+
+
+// ex 7
+assert(Stream.empty[Int].map(_ * 2).toList == Nil)
+assert(Stream(1, 2, 3).map(_ * 2).toList == List(2, 4, 6))
+
+assert(Stream.empty[Int].filter(_ != 0).toList == Nil)
+assert(Stream(1, 0, 2, 0, 3).filter(_ != 0).toList == List(1, 2, 3))
+
+assert(Stream(1, 2, 3).append(Stream(4, 5, 6)).toList == List(1, 2, 3, 4, 5, 6))
+
+def list(n: Int): Stream[Int] = Stream((1 to n).toList: _*)
+assert(Stream.empty[Int].flatMap(list).toList == Nil)
+assert(Stream(1, 2, 3).flatMap(list).toList == List(1, 1, 2, 1, 2, 3))
