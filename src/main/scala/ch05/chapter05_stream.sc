@@ -66,3 +66,18 @@ val fibs2: Stream[Int] = Stream.unfold((0, 1)) {
 
 assert(fibs2.take(3).toList == List(0, 1, 1))
 assert(fibs2.take(6).toList == List(0, 1, 1, 2, 3, 5))
+
+
+// ex 12
+def from2(n: Int): Stream[Int] =
+  Stream.unfold(n)(x => Option((x, x + 1)))
+
+assert(from2(2).take(5).toList == List(2, 3, 4, 5, 6))
+
+def constant2[A](n: A): Stream[A] =
+  Stream.unfold(n)(_ => Option(n, n))
+
+assert(Stream.constant(5).take(2).toList == List(5, 5))
+
+val ones: Stream[Int] = Stream.unfold(1)(_ => Option(1, 1))
+assert(ones.take(2).toList == List(1, 1))
