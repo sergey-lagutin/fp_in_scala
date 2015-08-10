@@ -58,6 +58,45 @@ sealed trait Stream[+A] {
 
   def find(p: A => Boolean): Option[A] =
     filter(p).headOption
+
+  def mapUsingFold[B](f: A => B): Stream[B] =
+    Stream.unfold(this) {
+      case Cons(h, t) => Option((f(h()), t()))
+      case Empty => None
+    }
+
+  def takeUsingFold(n: Int): Stream[A] =
+    Stream.unfold((this, n)) {
+      case (stream, value) => stream match {
+        case Cons(h, t) if value > 0 => Option((h(), (t(), value - 1)))
+        case _ => None
+      }
+    }
+
+  def takeWhileUsingFold(p: A => Boolean): Stream[A] =
+    Stream.unfold(this) {
+      case Cons(h, t) if p(h()) => Option((h(), t()))
+      case _ => None
+    }
+
+  def zipWith[B, C](that: Stream[B])(f: (A, B) => C): Stream[C] =
+    Stream.unfold((this, that)) {
+      case ((s1, s2)) => (s1, s2) match {
+        case (Cons(h1, t1), Cons(h2, t2)) => Option((f(h1(), h2()), (t1(), t2())))
+        case _ => None
+      }
+    }
+
+  def zipAll[B](that: Stream[B]): Stream[(Option[A], Option[B])] =
+    Stream.unfold((this, that)) {
+      case (s1, s2) => (s1, s2) match {
+        case (Cons(h1, t1), Cons(h2, t2)) => Option((Option(h1()), Option(h2())), (t1(), t2()))
+        case (Empty, Cons(h2, t2)) => Option((None, Option(h2())), (Empty, t2()))
+        case (Cons(h1, t1), Empty) => Option((Option(h1()), None), (t1(), Empty))
+        case (Empty, Empty) => None
+      }
+    }
+
 }
 
 case object Empty extends Stream[Nothing]

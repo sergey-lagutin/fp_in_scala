@@ -81,3 +81,20 @@ assert(Stream.constant(5).take(2).toList == List(5, 5))
 
 val ones: Stream[Int] = Stream.unfold(1)(_ => Option(1, 1))
 assert(ones.take(2).toList == List(1, 1))
+
+
+// ex 13
+assert(Stream.empty[Int].mapUsingFold(_ * 2).toList == Nil)
+assert(Stream(1, 2, 3).mapUsingFold(_ * 2).toList == List(2, 4, 6))
+
+assert(Stream.empty.takeUsingFold(2).toList == Nil)
+assert(Stream(1, 2, 3).takeUsingFold(2).toList == List(1, 2))
+
+assert(Stream.empty[Int].takeWhileUsingFold(x => true).toList == Nil)
+assert(Stream(1, 2, -1, 1, 2).takeWhileUsingFold(_ > 0).toList == List(1, 2))
+
+assert(Stream.empty[Int].zipWith(Stream(1, 2))(_ + _).toList == Nil)
+assert(Stream(1, 2, 3).zipWith(Stream(1, 2))(_ + _).toList == List(2, 4))
+
+assert(Stream.empty[Int].zipAll(Stream(1, 2)).toList == List((None, Some(1)), (None, Some(2))))
+assert(Stream(1, 2).zipAll(Stream(1)).toList == List((Some(1), Some(1)), (Some(2), None)))
