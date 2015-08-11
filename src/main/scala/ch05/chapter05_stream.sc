@@ -98,3 +98,9 @@ assert(Stream(1, 2, 3).zipWith(Stream(1, 2))(_ + _).toList == List(2, 4))
 
 assert(Stream.empty[Int].zipAll(Stream(1, 2)).toList == List((None, Some(1)), (None, Some(2))))
 assert(Stream(1, 2).zipAll(Stream(1)).toList == List((Some(1), Some(1)), (Some(2), None)))
+
+
+// ex 14
+assert(Stream(1, 2, 3).startsWith(Stream(1, 2)))
+assert(!Stream(1, 2, 3).startsWith(Stream(1, 2, 4)))
+assert(!Stream(1, 2).startsWith(Stream(1, 2, 3)))
