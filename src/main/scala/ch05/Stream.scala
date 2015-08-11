@@ -110,6 +110,9 @@ sealed trait Stream[+A] {
 
   def hasSubsequence[A](s: Stream[A]): Boolean =
     tails exists (_ startsWith s)
+
+  def scanRight[B](z: B)(f: (A, => B) => B): Stream[B] =
+    tails.map(_.foldRight(z)(f))
 }
 
 case object Empty extends Stream[Nothing]

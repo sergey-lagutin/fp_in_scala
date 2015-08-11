@@ -108,3 +108,7 @@ assert(!Stream(1, 2).startsWith(Stream(1, 2, 3)))
 
 // ex 15
 assert(Stream(1, 2, 3).tails.toList.map(_.toList) == List(List(1, 2, 3), List(2, 3), List(3), Nil))
+
+
+// ex 16
+assert(Stream(1, 2, 3).scanRight(0)(_ + _).toList == List(6, 5, 3, 0))
