@@ -107,6 +107,9 @@ sealed trait Stream[+A] {
       case stream@Cons(h, t) => Option((stream, t()))
       case Empty => None
     } append Stream(Stream.empty)
+
+  def hasSubsequence[A](s: Stream[A]): Boolean =
+    tails exists (_ startsWith s)
 }
 
 case object Empty extends Stream[Nothing]
