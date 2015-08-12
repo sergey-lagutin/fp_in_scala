@@ -9,3 +9,14 @@ def nonNegativeInt(rng: RNG): (Int, RNG) = {
 }
 
 assert(nonNegativeInt(Simple(1))._1 >= 0)
+
+
+// ex 2
+def double(rng: RNG): (Double, RNG) = {
+  val (n, next) = nonNegativeInt(rng)
+  (n / (Int.MaxValue.toDouble + 1), next)
+}
+
+assert(double(Simple(10))._1 >= 0)
+assert(double(Simple(10))._1 < 1)
+
