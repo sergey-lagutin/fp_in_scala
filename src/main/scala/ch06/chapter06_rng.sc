@@ -20,3 +20,23 @@ def double(rng: RNG): (Double, RNG) = {
 assert(double(Simple(10))._1 >= 0)
 assert(double(Simple(10))._1 < 1)
 
+// ex 3
+def intDouble(rng: RNG): ((Int, Double), RNG) = {
+  val (i, iRng) = rng.nextInt
+  val (d, dRng) = double(iRng)
+  ((i, d), dRng)
+}
+
+
+def doubleInt(rng: RNG): ((Double, Int), RNG) = {
+  val ((i, d), newRng) = intDouble(rng)
+  ((d, i), newRng)
+}
+
+def double3(rng: RNG): ((Double, Double, Double), RNG) = {
+  val (d1, rng1) = double(rng)
+  val (d2, rng2) = double(rng1)
+  val (d3, rng3) = double(rng2)
+  ((d1, d2, d3), rng3)
+}
+
