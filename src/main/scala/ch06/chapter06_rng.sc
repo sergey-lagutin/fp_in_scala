@@ -1,3 +1,4 @@
+import ch06.RNG._
 import ch06._
 
 // ex 1
@@ -52,3 +53,16 @@ def ints(count: Int)(rng: RNG): (List[Int], RNG) = {
 }
 
 assert(ints(5)(Simple(123))._1.size == 5)
+
+
+def nonNegativeEven: Rand[Int] =
+  map(nonNegativeInt)(i => i - i % 2)
+
+
+// ex 5
+def _double: Rand[Double] =
+  map(nonNegativeInt)(_ / (Int.MaxValue.toDouble + 1))
+
+assert(_double(Simple(10))._1 >= 0)
+assert(_double(Simple(10))._1 < 1)
+
