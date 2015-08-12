@@ -40,3 +40,15 @@ def double3(rng: RNG): ((Double, Double, Double), RNG) = {
   ((d1, d2, d3), rng3)
 }
 
+
+// ex 4
+def ints(count: Int)(rng: RNG): (List[Int], RNG) = {
+  if (count <= 0) (List(), rng)
+  else {
+    val (i, r) = rng.nextInt
+    val (list, r2) = ints(count - 1)(r)
+    (i :: list, r2)
+  }
+}
+
+assert(ints(5)(Simple(123))._1.size == 5)
