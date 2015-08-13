@@ -83,3 +83,22 @@ val randIntDouble: Rand[(Int, Double)] =
 
 val randDoubleInt: Rand[(Double, Int)] =
   both(double, int)
+
+
+// ex 7
+def sequence[A](fs: List[Rand[A]]): Rand[List[A]] =
+  rng =>
+    fs.foldRight((List[A](), rng)) {
+      (r0, acc) =>
+        val (v, r1) = r0(acc._2)
+        (v :: acc._1, r1)
+    }
+
+assert(sequence(List(unit(1), unit(2), unit(3)))(Simple(1))._1 == List(1, 2, 3))
+
+def sequence2[A](fs: List[Rand[A]]): Rand[List[A]] =
+  fs.foldRight(unit(List[A]()))((f, acc) => map2(f, acc)(_ :: _))
+
+def _ints(count: Int): Rand[List[Int]] =
+  sequence(List.fill(count)(int))
+
