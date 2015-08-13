@@ -66,3 +66,20 @@ def _double: Rand[Double] =
 assert(_double(Simple(10))._1 >= 0)
 assert(_double(Simple(10))._1 < 1)
 
+
+// ex 6
+def map2[A, B, C](ra: Rand[A], rb: Rand[B])(f: (A, B) => C): Rand[C] =
+  rng => {
+    val (v1, r1) = ra(rng)
+    val (v2, r2) = rb(r1)
+    (f(v1, v2), r2)
+  }
+
+def both[A, B](ra: Rand[A], rb: Rand[B]): Rand[(A, B)] =
+  map2(ra, rb)((_, _))
+
+val randIntDouble: Rand[(Int, Double)] =
+  both(int, double)
+
+val randDoubleInt: Rand[(Double, Int)] =
+  both(double, int)
